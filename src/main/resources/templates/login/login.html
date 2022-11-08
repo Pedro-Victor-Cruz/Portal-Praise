@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Praise Portal - Login</title>
@@ -96,9 +96,13 @@
                 <div class="col-sm-12">
                     <!-- Authentication card start -->
 
-                    <div th:if="${erro != null}" th:text="${erro}" class="alert alert-danger" role="alert"></div>
+                    <div class="alert alert-danger" role="alert"
+                    th:if="${param.error}">
+                        <button type="button", class="btn-close" data-bs-dismiss="alert"></button>
+                        <span>Senha ou usuário inválido</span>
+                    </div>
                     
-                        <form class="md-float-material form-material" method="post" action="/logar">
+                        <form class="md-float-material form-material" method="post" th:action="@{/login}">
                             <div class="text-center">
                                 <img src="assets/images/logo.png" alt="logo.png">
                             </div>
