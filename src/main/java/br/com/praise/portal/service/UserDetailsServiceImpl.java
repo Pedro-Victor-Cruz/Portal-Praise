@@ -25,7 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println(email);
         Optional<User> user = repository.login(email);
         if(user.isPresent()) {
-            System.out.println("2");
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             user.get().getAuthorities()
                     .forEach(role -> {

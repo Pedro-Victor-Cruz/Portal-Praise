@@ -1,0 +1,125 @@
+<div th:replace="public/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<div class="pcoded-content" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="page-header-title row">
+                        <h5 class="m-b-10">Usuários do portal</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card m-50">
+        <div class="card-block table-border-style mb-5">
+            <div>
+                <table class="table table-striped" style="width:100%" id="list_users_admin">
+                    <thead>
+                    <tr>
+                        <th class="text-center">E-mail</th>
+                        <th class="text-center">Nome</th>
+                        <th class="text-center">Chave</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th class="text-center">E-mail</th>
+                        <th class="text-center">Nome</th>
+                        <th class="text-center">Chave</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="user: ${users}">
+                        <td class="text-center">
+                            <a th:href="@{/portal/admin/users/config/{id}(id=${user.getID})}"
+                               th:text="${user.getEmail}">
+                            </a>
+                        </td>
+                        <td class="text-center" th:text="${user.getFirstname} + ' ' + ${user.getLastname}"></td>
+                        <td class="text-center" th:text="${user.getKey}"></td>
+                        <td class="text-center">
+                            <a onclick="confirm('Você está deletando um usuário, você tem certeza dessa ação? \n\nClique para confirmar!')"
+                               th:href="@{/portal/admin/users/deleted/{id}(id=${user.getID})}" class="btn btn-danger">
+                                <i class="ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="adicionarAdmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Adicionar usuário:</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form method="post" class="text-center md-float-material form-material" action="/portal/admin/users/add">
+                    <div class="auth-box card">
+                        <div class="card-block">
+                            <div class="form-group form-primary">
+                                <input type="text" name="username" class="form-control" required="Informe um nome completo">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Nome completo</label>
+                            </div>
+                            <div class="form-group form-primary">
+                                <input type="email" name="email" class="form-control" required="Informe um email">
+                                <span class="form-bar"></span>
+                                <label class="float-label">E-mail</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-primary">
+                                        <input type="password" name="password" class="form-control" required="Informe uma senha" minlength="6" maxlength="16">
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Senha</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-primary">
+                                        <input type="password" name="confirm_password" class="form-control" required="Confirme a senha" minlength="6" maxlength="16">
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Confirma senha</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-primary">
+                                <input type="text" name="key" class="form-control">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Chave do usuário</label>
+                            </div>
+                            <div class="form-group">
+                                <select name="role" class="form-control pesquisa__select col-12 selectpicker">
+                                    <option value="CLIENTE">Cliente</option>
+                                    <option value="GERENTE">Gerente</option>
+                                    <option value="ADMIN">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="submit"
+                                            class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">
+                                        Adicionar novo usuário
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="public/nav" xmlns:th="http://www.w3.org/1999/xhtml"></div>

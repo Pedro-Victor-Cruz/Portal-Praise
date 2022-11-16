@@ -1,8 +1,8 @@
 package br.com.praise.portal.model;
 
-import com.google.gson.Gson;
+import br.com.praise.portal.Enum.Permissions;
+import br.com.praise.portal.Enum.RolesEnum;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,34 +25,42 @@ public class User implements UserDetails {
     @Id
     @JsonProperty("_id")
     private String ID;
-    private String username;
+    private String firstname;
+    private String lastname;
     private String key;
     private String email;
     private String password;
-    private Set<Role> roles;
+    private Set<Permission> perms;
 
-    public User(String ID, String username, String key, String email, String password, Set<Role> roles) {
+    public User(String ID, String firstname, String lastname, String key, String email, String password, Set<Permission> perms) {
         this.ID = ID;
-        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.key = key;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.perms = perms;
     }
 
-    public User(String username, String key, String email, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String firstname, String lastname, String key, String email, String password, Set<Permission> perms) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.key = key;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.perms = perms;
     }
 
     public User() {}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return this.perms;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -72,6 +81,26 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addPermissions(List<Permissions> perms) {
+        Set<Permission> permissions = new HashSet<>();
+        perms.forEach(permissions1 -> permissions.add(new Permission(permissions1)));
+        this.setPerms(permissions);
+    }
+
+    public boolean hasPermission(String perm) {
+        for(Permission permission : this.perms)
+            if (permission.getPerm().name().equals(perm) || permission.getPerm() == Permissions.ADMIN)
+                return true;
+        return false;
+    }
+
+    public boolean getPermission(String perm) {
+        for(Permission permission : this.perms)
+            if (permission.getPerm().name().equals(perm))
+                return true;
+        return false;
     }
 }
 

@@ -53,28 +53,22 @@ public class Device {
 
     @Transient
     public String getAtivoModel() {
-        if(this.ativo == true) {
+        if(this.ativo)
             return "table-success";
-        } else {
-            return "table-danger";
-        }
+        return "table-danger";
     }
 
     @Transient
     public String getDisplayAtivo() {
-        if(this.ativo == true) {
+        if(this.ativo)
             return "btn btn-danger";
-        } else {
-            return "btn btn-success";
-        }
+        return "btn btn-success";
     }
 
     @Transient
     public String getDisplayAtivoText() {
-        if(this.ativo == true) {
+        if (this.ativo)
             return "Inativar";
-        } else {
-            return "Ativar";
-        }
+        return "Ativar";
     }
 }

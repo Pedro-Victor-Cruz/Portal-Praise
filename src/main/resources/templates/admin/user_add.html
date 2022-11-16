@@ -1,0 +1,86 @@
+<div th:replace="public/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<div class="pcoded-content" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="page-header-title row">
+                        <h5 class="m-b-10">Painel de cadastro de usuário</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 15px;">
+        <div class="card h-100">
+            <div class="card-body">
+                <form method="post" action="/portal/admin/users/add">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="mb-3 text-primary">Dados cadastrais:</h6>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6">
+                            <label for="firstname">Nome</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname">
+                        </div>
+
+                        <div class="form-group col-12 col-md-6">
+                            <label for="lastname">Sobrenome</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6">
+                            <label for="eMail">Email</label>
+                            <input type="email" class="form-control" name="email" id="eMail">
+                        </div>
+
+                        <div class="form-group col-12 col-md-6">
+                            <label for="eMail">Senha</label>
+                            <input type="password" class="form-control" name="password" id="senha">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6">
+                            <label for="key">Chave:</label>
+                            <input class="form-control" type="text" name="key" id="key">
+                        </div>
+
+                    </div>
+
+                    <hr>
+                    <div>
+                        <div class="card">
+                            <div class="card-header" style="background-color: #3d3173">
+                                <span class="float-left" style="font-size: 25px; color: #ffffff;">Permissões</span>
+                                <input type="checkbox" class="float-right">
+                            </div>
+                            <div class="card-body" style="background-color: #b7b7b7">
+                                <div th:each="perm: ${perms}">
+                                    <label class="d-flex align-items-stretch bd-highlight" style="height: 50px">
+                                        <div style="width: 50px; height: 50px">
+                                            <input name="permissions" type="checkbox" class="form-check-input" th:value="${perm}"
+                                                   style="display: block; margin: 18px auto; transform: scale(1.5); border-radius: 3px">
+                                        </div>
+                                        <div style="height: 50px">
+                                            <p style="height: 20px; margin: 0px; font-size: 20px;"
+                                               th:text="${perm.getName}"></p>
+                                            <p style="height: 30px; margin-top: 10px; font-size: 15px;"
+                                               th:text="${perm.getDesc}"></p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="public/nav" xmlns:th="http://www.w3.org/1999/xhtml"></div>

@@ -38,8 +38,8 @@
                             <td class="text-center" th:text="${device.getChave}"></td>
                             <td class="text-center" th:text="${device.getModel}"></td>
                             <td class="text-center" th:text="${device.getDtativacao}"></td>
-                            <td class="text-center">
-                                <a th:href="@{/devices/activateOrInactivate/{id}(id=${device.getID})}"
+                            <td th:if="${user.hasPermission('CHANGE_DEVICE_STATUS')}" class="text-center">
+                                <a th:href="@{/portal/devices/activateOrInactivate/{id}(id=${device.getID})}"
                                                        th:class="${device.getDisplayAtivo}" th:text="${device.getDisplayAtivoText}"></a>
                             </td>
                         </tr>

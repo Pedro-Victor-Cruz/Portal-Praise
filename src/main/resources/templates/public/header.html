@@ -15,25 +15,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
     <!-- Favicon icon -->
-    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <!-- waves.css -->
-    <link rel="stylesheet" href="../assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
     <!-- Required Fremwork -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap/css/bootstrap.min.css">
     <!-- waves.css -->
-    <link rel="stylesheet" href="../assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
     <!-- themify icon -->
-    <link rel="stylesheet" type="text/css" href="../assets/icon/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="../assets/icon/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
     <!-- scrollbar.css -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
     <!-- am chart export.css -->
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap.css"/>
     <!-- Style.css -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <!-- Admin Manger -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/opensans-font.css">
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/line-awesome/css/line-awesome.min.css">
 </head>
 
 <body>
@@ -101,7 +108,7 @@
                         <i class="ti-menu"></i>
                     </a>
                     <a href="/">
-                        <img class="img-fluid" src="../../assets/images/logo.png" alt="Theme-Logo" />
+                        <img class="img-fluid" src="/assets/images/logo.png" alt="Theme-Logo" />
                     </a>
                     <a class="mobile-options waves-effect waves-light">
                         <i class="ti-more"></i>
@@ -112,8 +119,8 @@
                     <ul class="nav-right">
                         <li class="user-profile header-notification">
                             <a href="#!" class="waves-effect waves-light">
-                                <img src="../assets/images/auth/logo.png" class="img-radius" alt="User-Profile-Image">
-                                <span><span th:text="${user.getUsername}"></span>
+                                <img src="/assets/images/auth/logo.png" class="img-radius" alt="User-Profile-Image">
+                                <span><span th:text="${user.getFirstname}"></span>
                                 <i class="ti-angle-down"></i>
                             </a>
                             <ul class="show-notification profile-notification">
@@ -146,9 +153,9 @@
                     <div class="pcoded-inner-navbar main-menu">
                         <div class="">
                             <div class="main-menu-header">
-                                <img class="img-80 img-radius" src="../assets/images/auth/logo.png" alt="User-Profile-Image">
+                                <img class="img-80 img-radius" src="/assets/images/auth/logo.png" alt="User-Profile-Image">
                                 <div class="user-details">
-                                    <span id="more-details"><span th:text="${user.getUsername}"><i class="fa fa-caret-down"></i></span>
+                                    <span id="more-details"><span th:text="${user.getFirstname}"><i class="fa fa-caret-down"></i></span>
                                 </div>
                             </div>
 
@@ -165,19 +172,31 @@
                         <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Categorias:</div>
                         <ul class="pcoded-item pcoded-left-item">
                             <li>
-                                <a href="/" class="waves-effect waves-dark">
+                                <a href="/portal/home" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Home</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/devices" class="waves-effect waves-dark">
+                            <li th:if="${user.hasPermission('VIEW_DEVICE_LIST')}">
+                                <a href="/portal/devices" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-mobile"></i><b>FC</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.form-components.main">Dispositivos</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                         </ul>
+                        <div th:if="${user.hasPermission('ADMIN')}">
+                            <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Administração:</div>
+                            <ul class="pcoded-item pcoded-left-item">
+                                <li>
+                                    <a href="/portal/admin/users/list" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Lista usuários</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
