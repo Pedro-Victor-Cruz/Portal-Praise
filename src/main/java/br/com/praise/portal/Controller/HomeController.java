@@ -32,24 +32,5 @@ public class HomeController {
         return "home/index";
     }
 
-    @RequestMapping(value = {"/devices"}, method = RequestMethod.GET)
-    public String device(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
-        String id = CookieService.getCookie(request, "userID");
-        User user = userRepo.findFirstByID(id);
-        model.addAttribute("user", user);
-
-        List<Device> devices = user.getKey().equals("admin") ? deviceRepo.findAll() : deviceRepo.findAllDevicesByKey(user.getKey());
-        model.addAttribute("dispositivos", devices);
-        return "devices/index";
-    }
-
-    @RequestMapping(value = {"/devices/activateOrInactivate/{id}"}, method = RequestMethod.GET)
-    public String deviceStatus(@PathVariable String id) {
-        Device device = deviceRepo.findFirstByID(id);
-        boolean status = device.isAtivo();
-        device.setAtivo(!status);
-        deviceRepo.save(device);
-        return "redirect:/portal/devices";
-    }
 
 }

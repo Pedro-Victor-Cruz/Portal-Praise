@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        System.out.println(email);
         Optional<User> user = repository.login(email);
         if(user.isPresent()) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();

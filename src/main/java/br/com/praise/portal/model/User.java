@@ -1,7 +1,6 @@
 package br.com.praise.portal.model;
 
 import br.com.praise.portal.Enum.Permissions;
-import br.com.praise.portal.Enum.RolesEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

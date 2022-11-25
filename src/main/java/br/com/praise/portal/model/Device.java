@@ -52,6 +52,10 @@ public class Device {
     public Device() {}
 
     @Transient
+    public String getTimeFormat() {
+        return dtativacao.substring(7,21);
+    }
+    @Transient
     public String getAtivoModel() {
         if(this.ativo)
             return "table-success";

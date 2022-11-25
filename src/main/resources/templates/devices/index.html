@@ -1,27 +1,16 @@
 <div th:replace="public/header" xmlns:th="http://www.w3.org/1999/xhtml"> </div>
-    <div class="pcoded-content" xmlns:th="http://www.w3.org/1999/xhtml">
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <div class="page-header-title row">
-                            <h5 class="m-b-10">Dispositivos: </h5>
-                            <h5 class="m-b-10" style="padding-left: 5px;" th:text="${user.getKey}"></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="pcoded-content" style="padding: 10px;" xmlns:th="http://www.w3.org/1999/xhtml">
         <div class="card shadow m-50">
             <div class="card-block table-border-style mb-5">
-                <div class="table-responsive">
-                    <table class="table">
+                <div>
+                    <table class="table table-striped" id="list_device_all">
                         <thead>
                         <tr>
                             <th class="text-center">Vendedor</th>
                             <th class="text-center">Cliente</th>
                             <th class="text-center">Modelo</th>
                             <th class="text-center">Data ativação</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -30,16 +19,17 @@
                             <th class="text-center">Cliente</th>
                             <th class="text-center">Modelo</th>
                             <th class="text-center">Data ativação</th>
+                            <th></th>
                         </tr>
                         </tfoot>
                         <tbody>
-                        <tr th:each="device: ${dispositivos}" th:class="${device.getAtivoModel}">
+                        <tr th:each="device: ${dispositivos}">
                             <td class="text-center" th:text="${device.getCodvend}"></td>
                             <td class="text-center" th:text="${device.getChave}"></td>
                             <td class="text-center" th:text="${device.getModel}"></td>
-                            <td class="text-center" th:text="${device.getDtativacao}"></td>
+                            <td class="text-center" th:text="${device.getTimeFormat}"></td>
                             <td th:if="${user.hasPermission('CHANGE_DEVICE_STATUS')}" class="text-center">
-                                <a th:href="@{/portal/devices/activateOrInactivate/{id}(id=${device.getID})}"
+                                <a th:href="@{/portal/device/activateOrInactivate/{id}(id=${device.getID})}"
                                                        th:class="${device.getDisplayAtivo}" th:text="${device.getDisplayAtivoText}"></a>
                             </td>
                         </tr>

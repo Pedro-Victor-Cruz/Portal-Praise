@@ -1,0 +1,43 @@
+<div th:replace="public/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<div class="pcoded-content" style="padding: 10px;" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="card m-50">
+        <div class="card-block table-border-style mb-5">
+            <div>
+                <table class="table table-striped" style="width:100%" id="list_clients">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Chave</th>
+                        <th>Licenças</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Chave</th>
+                        <th>Licenças</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="client: ${clients}">
+                        <td>
+                            <a th:href="@{/portal/admin/users/config/{id}(id=${client.getID})}"
+                               th:text="${client.getNome}">
+                            </a>
+                        </td>
+                        <td th:text="${client.getChave}"></td>
+                        <td th:text="${client.getLicencas}"></td>
+                        <td class="text-center" th:if="${user.hasPermission('CHANGE_CLIENT_STATUS')}">
+                            <a th:href="@{/portal/admin/client/activateOrInactivate/{id}(id=${client.getID})}"
+                               th:class="${client.getDisplayAtivo}" th:text="${client.getDisplayAtivoText}"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="public/nav" xmlns:th="http://www.w3.org/1999/xhtml"></div>

@@ -1,13 +1,16 @@
 package br.com.praise.portal.Controller;
 
 import br.com.praise.portal.Enum.Permissions;
-import br.com.praise.portal.Enum.RolesEnum;
-import br.com.praise.portal.model.Permission;
 import br.com.praise.portal.model.User;
 import br.com.praise.portal.repository.user.UserRepository;
 import br.com.praise.portal.service.CookieService;
+import br.com.praise.portal.service.UserDetailsServiceImpl;
 import br.com.praise.portal.service.segurity.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,15 @@ public class AdminMiddleware {
 
     @Autowired
     private UserRepository userRepo;
+
+    private UserDetailsServiceImpl userDetails;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public AdminMiddleware(UserDetailsServiceImpl userDetails, PasswordEncoder passwordEncoder) {
+        this.userDetails = userDetails;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @RequestMapping(value = {"/users/list"}, method = RequestMethod.GET)
     public String home(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -83,14 +94,19 @@ public class AdminMiddleware {
         if(user != null) {
             if(!firstname.isEmpty()) {
                 user.setFirstname(firstname);
-            } else if (!lastname.isEmpty()) {
+            }
+            if (!lastname.isEmpty()) {
                 user.setLastname(lastname);
-            } else if (!email.isEmpty()) {
+            }
+            if (!email.isEmpty()) {
                 user.setEmail(email);
-            } else if (!password.isEmpty()) {
-                user.setPassword(SecurityConfiguration.passwordEncoder().encode(password));
-            } else if (!key.isEmpty()) {
-                user.setKey(password);
+            }
+            if (!password.isEmpty()) {
+                String passwordEncrypt = SecurityConfiguration.passwordEncoder().encode(password);
+                user.setPassword(passwordEncrypt);
+            }
+            if (!key.isEmpty()) {
+                user.setKey(key);
             }
             user.addPermissions(permissions);
             userRepo.save(user);

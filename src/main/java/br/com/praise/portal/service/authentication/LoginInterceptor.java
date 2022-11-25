@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             if(CookieService.getCookie(request, "userID") != null) {
                 return true;
             }
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         response.sendRedirect("/login");
         return false;

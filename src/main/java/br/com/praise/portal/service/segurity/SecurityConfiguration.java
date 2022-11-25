@@ -1,8 +1,5 @@
 package br.com.praise.portal.service.segurity;
 
-import br.com.praise.portal.Enum.Permissions;
-import br.com.praise.portal.Enum.RolesEnum;
-import br.com.praise.portal.model.Role;
 import br.com.praise.portal.model.User;
 import br.com.praise.portal.repository.user.UserRepository;
 import br.com.praise.portal.service.CookieService;
@@ -13,16 +10,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Optional;
 
 @Configuration
@@ -42,28 +33,23 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/assets/**").permitAll()
-                .antMatchers("/portal/admin/**").hasAnyAuthority(Permissions.ADMIN.name())
+                .antMatchers("/portal/admin/**").permitAll()//.hasAnyAuthority(Permissions.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .usernameParameter("email")
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request,
-                                                        HttpServletResponse response,
-                                                        Authentication authentication) throws IOException, ServletException {
+                .successHandler((request, response, authentication) -> {
 
-                        String login = authentication.getName();
-                        Optional<User> user = userRepository.login(login);
-                        if(user.isPresent()) {
-                            int tempLogIn = (60*60);
-                            CookieService.setCookie(response, "userID", String.valueOf(user.get().getID()),tempLogIn);
-                            CookieService.setCookie(response, "nameUser", String.valueOf(user.get().getUsername()),tempLogIn);
-                        }
-                        String redirectURL = "/portal/home";
-                        response.sendRedirect(redirectURL);
+                    String login = authentication.getName();
+                    Optional<User> user = userRepository.login(login);
+                    if(user.isPresent()) {
+                        int tempLogIn = (60*60);
+                        CookieService.setCookie(response, "userID", String.valueOf(user.get().getID()),tempLogIn);
+                        CookieService.setCookie(response, "nameUser", String.valueOf(user.get().getUsername()),tempLogIn);
                     }
+                    String redirectURL = "/portal/home";
+                    response.sendRedirect(redirectURL);
                 })
                 .and()
                 .logout(logout -> {
